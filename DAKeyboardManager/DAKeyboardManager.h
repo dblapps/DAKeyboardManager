@@ -25,6 +25,8 @@
 
 - (void) registerViewController:(UIViewController*)controller;
 - (void) deregisterViewController:(UIViewController*)controller;
+- (void) register:(id<DAKeyboardManagerProtocol>)object;
+- (void) deregister:(id<DAKeyboardManagerProtocol>)object;
 
 - (CGSize) availableSize:(CGRect)viewFrame;
 
