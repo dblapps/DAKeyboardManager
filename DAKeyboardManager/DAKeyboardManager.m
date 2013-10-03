@@ -15,7 +15,8 @@
 
 @implementation DAKeyboardManager
 {
-	NSMutableArray* viewControllers;
+	NSMutableArray* registeredViewControllers;
+	NSMutableArray* registeredObjects;
 }
 
 + (DAKeyboardManager*) sharedManager
@@ -33,7 +34,8 @@
 	self = [super init];
 	if (self != nil) {
 		_keyboardVisible = NO;
-		viewControllers = [NSMutableArray array];
+		registeredViewControllers = [NSMutableArray array];
+		registeredObjects = [NSMutableArray array];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(keyboardWillShow:)
 													 name:UIKeyboardWillShowNotification object:nil];
@@ -58,14 +60,26 @@
 
 - (void) registerViewController:(UIViewController*)controller
 {
-	if (![viewControllers containsObject:controller]) {
-		[viewControllers addObject:controller];
+	if (![registeredViewControllers containsObject:controller]) {
+		[registeredViewControllers addObject:controller];
 	}
 }
 
 - (void) deregisterViewController:(UIViewController*)controller
 {
-	[viewControllers removeObject:controller];
+	[registeredViewControllers removeObject:controller];
+}
+
+- (void) register:(id<DAKeyboardManagerProtocol>)object
+{
+	if (![registeredObjects containsObject:object]) {
+		[registeredObjects addObject:object];
+	}
+}
+
+- (void) deregister:(id<DAKeyboardManagerProtocol>)object
+{
+	[registeredObjects removeObject:object];
 }
 
 - (CGSize) availableSize:(CGRect)viewFrame
@@ -80,22 +94,32 @@
 - (void) keyboardWillShow:(NSNotification*)notification
 {
 	_keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-	if (viewControllers.count > 0) {
-		UIViewController* controller = (UIViewController*)[viewControllers lastObject];
+	if (registeredViewControllers.count > 0) {
+		UIViewController* controller = (UIViewController*)[registeredViewControllers lastObject];
 		if (UIInterfaceOrientationIsLandscape(controller.interfaceOrientation)) {
 			_keyboardSize = CGSizeMake(_keyboardSize.height, _keyboardSize.width);
 		}
 	}
 	if (_keyboardVisible) {
-		for (UIViewController* controller in viewControllers) {
+		for (UIViewController* controller in registeredViewControllers) {
 			if ([controller respondsToSelector:@selector(keyboardWillChange:)]) {
 				[controller performSelector:@selector(keyboardWillChange:) withObject:notification];
 			}
 		}
+		for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
+			if ([object respondsToSelector:@selector(keyboardWillChange:)]) {
+				[object performSelector:@selector(keyboardWillChange:) withObject:notification];
+			}
+		}
 	} else {
-		for (UIViewController* controller in viewControllers) {
+		for (UIViewController* controller in registeredViewControllers) {
 			if ([controller respondsToSelector:@selector(keyboardWillShow:)]) {
 				[controller performSelector:@selector(keyboardWillShow:) withObject:notification];
+			}
+		}
+		for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
+			if ([object respondsToSelector:@selector(keyboardWillShow:)]) {
+				[object performSelector:@selector(keyboardWillShow:) withObject:notification];
 			}
 		}
 	}
@@ -106,15 +130,25 @@
 	BOOL keyboardWasVisible = _keyboardVisible;
 	_keyboardVisible = YES;
 	if (keyboardWasVisible) {
-		for (UIViewController* controller in viewControllers) {
+		for (UIViewController* controller in registeredViewControllers) {
 			if ([controller respondsToSelector:@selector(keyboardDidChange:)]) {
 				[controller performSelector:@selector(keyboardDidChange:) withObject:notification];
 			}
 		}
+		for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
+			if ([object respondsToSelector:@selector(keyboardDidChange:)]) {
+				[object performSelector:@selector(keyboardDidChange:) withObject:notification];
+			}
+		}
 	} else {
-		for (UIViewController* controller in viewControllers) {
+		for (UIViewController* controller in registeredViewControllers) {
 			if ([controller respondsToSelector:@selector(keyboardDidShow:)]) {
 				[controller performSelector:@selector(keyboardDidShow:) withObject:notification];
+			}
+		}
+		for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
+			if ([object respondsToSelector:@selector(keyboardDidShow:)]) {
+				[object performSelector:@selector(keyboardDidShow:) withObject:notification];
 			}
 		}
 	}
@@ -123,9 +157,14 @@
 - (void) keyboardWillHide:(NSNotification*)notification
 {
 	_keyboardVisible = NO;
-	for (UIViewController* controller in viewControllers) {
+	for (UIViewController* controller in registeredViewControllers) {
 		if ([controller respondsToSelector:@selector(keyboardWillHide:)]) {
 			[controller performSelector:@selector(keyboardWillHide:) withObject:notification];
+		}
+	}
+	for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
+		if ([object respondsToSelector:@selector(keyboardWillHide:)]) {
+			[object performSelector:@selector(keyboardWillHide:) withObject:notification];
 		}
 	}
 }
