@@ -129,6 +129,7 @@
 {
 	BOOL keyboardWasVisible = _keyboardVisible;
 	_keyboardVisible = YES;
+	_keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 	if (keyboardWasVisible) {
 		for (UIViewController* controller in registeredViewControllers) {
 			if ([controller respondsToSelector:@selector(keyboardDidChange:)]) {
