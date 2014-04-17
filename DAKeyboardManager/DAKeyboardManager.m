@@ -102,24 +102,24 @@
 	}
 	if (_keyboardVisible) {
 		for (UIViewController* controller in registeredViewControllers) {
-			if ([controller respondsToSelector:@selector(keyboardWillChange:)]) {
-				[controller performSelector:@selector(keyboardWillChange:) withObject:notification];
+			if ([controller respondsToSelector:@selector(keyboardManagerWillChange:)]) {
+				[controller performSelector:@selector(keyboardManagerWillChange:) withObject:notification];
 			}
 		}
 		for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
-			if ([object respondsToSelector:@selector(keyboardWillChange:)]) {
-				[object performSelector:@selector(keyboardWillChange:) withObject:notification];
+			if ([object respondsToSelector:@selector(keyboardManagerWillChange:)]) {
+				[object performSelector:@selector(keyboardManagerWillChange:) withObject:notification];
 			}
 		}
 	} else {
 		for (UIViewController* controller in registeredViewControllers) {
-			if ([controller respondsToSelector:@selector(keyboardWillShow:)]) {
-				[controller performSelector:@selector(keyboardWillShow:) withObject:notification];
+			if ([controller respondsToSelector:@selector(keyboardManagerWillShow:)]) {
+				[controller performSelector:@selector(keyboardManagerWillShow:) withObject:notification];
 			}
 		}
 		for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
-			if ([object respondsToSelector:@selector(keyboardWillShow:)]) {
-				[object performSelector:@selector(keyboardWillShow:) withObject:notification];
+			if ([object respondsToSelector:@selector(keyboardManagerWillShow:)]) {
+				[object performSelector:@selector(keyboardManagerWillShow:) withObject:notification];
 			}
 		}
 	}
@@ -138,24 +138,24 @@
 	}
 	if (keyboardWasVisible) {
 		for (UIViewController* controller in registeredViewControllers) {
-			if ([controller respondsToSelector:@selector(keyboardDidChange:)]) {
-				[controller performSelector:@selector(keyboardDidChange:) withObject:notification];
+			if ([controller respondsToSelector:@selector(keyboardManagerDidChange:)]) {
+				[controller performSelector:@selector(keyboardManagerDidChange:) withObject:notification];
 			}
 		}
 		for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
-			if ([object respondsToSelector:@selector(keyboardDidChange:)]) {
-				[object performSelector:@selector(keyboardDidChange:) withObject:notification];
+			if ([object respondsToSelector:@selector(keyboardManagerDidChange:)]) {
+				[object performSelector:@selector(keyboardManagerDidChange:) withObject:notification];
 			}
 		}
 	} else {
 		for (UIViewController* controller in registeredViewControllers) {
-			if ([controller respondsToSelector:@selector(keyboardDidShow:)]) {
-				[controller performSelector:@selector(keyboardDidShow:) withObject:notification];
+			if ([controller respondsToSelector:@selector(keyboardManagerDidShow:)]) {
+				[controller performSelector:@selector(keyboardManagerDidShow:) withObject:notification];
 			}
 		}
 		for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
-			if ([object respondsToSelector:@selector(keyboardDidShow:)]) {
-				[object performSelector:@selector(keyboardDidShow:) withObject:notification];
+			if ([object respondsToSelector:@selector(keyboardManagerDidShow:)]) {
+				[object performSelector:@selector(keyboardManagerDidShow:) withObject:notification];
 			}
 		}
 	}
@@ -165,13 +165,13 @@
 {
 	_keyboardVisible = NO;
 	for (UIViewController* controller in registeredViewControllers) {
-		if ([controller respondsToSelector:@selector(keyboardWillHide:)]) {
-			[controller performSelector:@selector(keyboardWillHide:) withObject:notification];
+		if ([controller respondsToSelector:@selector(keyboardManagerWillHide:)]) {
+			[controller performSelector:@selector(keyboardManagerWillHide:) withObject:notification];
 		}
 	}
 	for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
-		if ([object respondsToSelector:@selector(keyboardWillHide:)]) {
-			[object performSelector:@selector(keyboardWillHide:) withObject:notification];
+		if ([object respondsToSelector:@selector(keyboardManagerWillHide:)]) {
+			[object performSelector:@selector(keyboardManagerWillHide:) withObject:notification];
 		}
 	}
 }

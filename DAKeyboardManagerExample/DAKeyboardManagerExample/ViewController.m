@@ -51,12 +51,12 @@
 	}];
 }
 
-- (void) keyboardWillShow:(NSNotification*)notification
+- (void) keyboardManagerWillShow:(NSNotification*)notification
 {
 	[self adjustViewForAvailableSize:[[DAKeyboardManager sharedManager] availableSize:self.view.bounds]];
 }
 
-- (void) keyboardWillHide:(NSNotification*)notification
+- (void) keyboardManagerWillHide:(NSNotification*)notification
 {
 	[self adjustViewForAvailableSize:self.view.bounds.size];
 }

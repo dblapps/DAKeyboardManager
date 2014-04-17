@@ -7,13 +7,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class DAKeyboardManager;
 @protocol DAKeyboardManagerProtocol <NSObject>
 @optional
-- (void) keyboardWillShow:(NSNotification*)notification;
-- (void) keyboardDidShow:(NSNotification*)notification;
-- (void) keyboardWillChange:(NSNotification*)notification;
-- (void) keyboardDidChange:(NSNotification*)notification;
-- (void) keyboardWillHide:(NSNotification*)notification;
+- (void) keyboardManagerWillShow:(NSNotification*)notification;
+- (void) keyboardManagerDidShow:(NSNotification*)notification;
+- (void) keyboardManagerWillChange:(NSNotification*)notification;
+- (void) keyboardManagerDidChange:(NSNotification*)notification;
+- (void) keyboardManagerWillHide:(NSNotification*)notification;
 @end
 
 @interface DAKeyboardManager : NSObject
