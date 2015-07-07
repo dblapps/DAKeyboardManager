@@ -10,6 +10,7 @@
 #import "DAKeyboardManager.h"
 
 @interface ViewController () <UITextViewDelegate>
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @end
 
@@ -42,23 +43,20 @@
 
 #pragma mark - DAKeyboardManager
 
-- (void) adjustViewForAvailableSize:(CGSize)availableSize
-{
-	[UIView animateWithDuration:0.3f animations:^() {
-		CGRect rect = self.textView.frame;
-		rect.size.height = availableSize.height;
-		self.textView.frame = rect;
-	}];
-}
-
 - (void) keyboardManagerWillShow:(NSNotification*)notification
 {
-	[self adjustViewForAvailableSize:[[DAKeyboardManager sharedManager] availableSize:self.view.bounds]];
+	self.bottomConstraint.constant = [DAKeyboardManager sharedManager].keyboardSize.height;
+	[UIView animateWithDuration:0.3f animations:^() {
+		[self.textView layoutIfNeeded];
+	}];
 }
 
 - (void) keyboardManagerWillHide:(NSNotification*)notification
 {
-	[self adjustViewForAvailableSize:self.view.bounds.size];
+	self.bottomConstraint.constant = 0;
+	[UIView animateWithDuration:0.3f animations:^() {
+		[self.textView layoutIfNeeded];
+	}];
 }
 
 

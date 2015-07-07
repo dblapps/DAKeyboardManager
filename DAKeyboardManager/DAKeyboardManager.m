@@ -94,12 +94,6 @@
 - (void) keyboardWillShow:(NSNotification*)notification
 {
 	_keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-	if (registeredViewControllers.count > 0) {
-		UIViewController* controller = (UIViewController*)[registeredViewControllers lastObject];
-		if (UIInterfaceOrientationIsLandscape(controller.interfaceOrientation)) {
-			_keyboardSize = CGSizeMake(_keyboardSize.height, _keyboardSize.width);
-		}
-	}
 	if (_keyboardVisible) {
 		for (UIViewController* controller in registeredViewControllers) {
 			if ([controller respondsToSelector:@selector(keyboardManagerWillChange:)]) {
@@ -130,12 +124,6 @@
 	BOOL keyboardWasVisible = _keyboardVisible;
 	_keyboardVisible = YES;
 	_keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-	if (registeredViewControllers.count > 0) {
-		UIViewController* controller = (UIViewController*)[registeredViewControllers lastObject];
-		if (UIInterfaceOrientationIsLandscape(controller.interfaceOrientation)) {
-			_keyboardSize = CGSizeMake(_keyboardSize.height, _keyboardSize.width);
-		}
-	}
 	if (keyboardWasVisible) {
 		for (UIViewController* controller in registeredViewControllers) {
 			if ([controller respondsToSelector:@selector(keyboardManagerDidChange:)]) {
