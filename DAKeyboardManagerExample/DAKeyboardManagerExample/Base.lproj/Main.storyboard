@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,8 +18,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wlO-ic-M6s">
+                                <rect key="frame" x="8" y="28" width="304" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="h7s-aj-m1g"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                            </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fQQ-54-em4">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="66" width="320" height="502"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.  Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.  Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -30,12 +39,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="fQQ-54-em4" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="Exg-fr-zgc"/>
                             <constraint firstItem="fQQ-54-em4" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="GJk-Fw-dKn"/>
+                            <constraint firstItem="fQQ-54-em4" firstAttribute="top" secondItem="wlO-ic-M6s" secondAttribute="bottom" constant="8" id="RM2-Gc-7Bw"/>
                             <constraint firstAttribute="bottom" secondItem="fQQ-54-em4" secondAttribute="bottom" id="UbP-bc-hqB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wlO-ic-M6s" secondAttribute="trailing" constant="-8" id="bIC-fI-yXp"/>
+                            <constraint firstItem="wlO-ic-M6s" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-8" id="dIB-Sb-aOR"/>
                             <constraint firstAttribute="trailing" secondItem="fQQ-54-em4" secondAttribute="trailing" id="fEA-q7-1Xh"/>
+                            <constraint firstItem="wlO-ic-M6s" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="28" id="h3T-sf-aht"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
                         <outlet property="bottomConstraint" destination="UbP-bc-hqB" id="BG3-hL-DS5"/>
                         <outlet property="textView" destination="fQQ-54-em4" id="IdV-6a-E3G"/>

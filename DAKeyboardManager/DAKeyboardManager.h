@@ -15,12 +15,15 @@
 - (void) keyboardManagerWillChange:(NSNotification*)notification;
 - (void) keyboardManagerDidChange:(NSNotification*)notification;
 - (void) keyboardManagerWillHide:(NSNotification*)notification;
+- (void) keyboardManagerDidHide:(NSNotification*)notification;
 @end
 
 @interface DAKeyboardManager : NSObject
 
 @property (readonly) BOOL keyboardVisible;
 @property (readonly) CGSize keyboardSize;
+@property (readonly) CGSize keyboardBeginSize;
+@property (readonly) CGSize keyboardEndSize;
 
 + (DAKeyboardManager*) sharedManager;
 
@@ -30,5 +33,7 @@
 - (void) deregister:(id<DAKeyboardManagerProtocol>)object;
 
 - (CGSize) availableSize:(CGRect)viewFrame;
+- (CGSize) availableBeginSize:(CGRect)viewFrame;
+- (CGSize) availableEndSize:(CGRect)viewFrame;
 
 @end

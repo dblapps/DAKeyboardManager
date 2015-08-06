@@ -19,7 +19,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+		self.textView.font = [UIFont systemFontOfSize:48.0f];
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,7 +47,15 @@
 
 - (void) keyboardManagerWillShow:(NSNotification*)notification
 {
-	self.bottomConstraint.constant = [DAKeyboardManager sharedManager].keyboardSize.height;
+	self.bottomConstraint.constant = [DAKeyboardManager sharedManager].keyboardEndSize.height;
+	[UIView animateWithDuration:0.3f animations:^() {
+		[self.textView layoutIfNeeded];
+	}];
+}
+
+- (void) keyboardManagerWillChange:(NSNotification*)notification
+{
+	self.bottomConstraint.constant = [DAKeyboardManager sharedManager].keyboardEndSize.height;
 	[UIView animateWithDuration:0.3f animations:^() {
 		[self.textView layoutIfNeeded];
 	}];

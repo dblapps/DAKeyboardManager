@@ -43,10 +43,14 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(keyboardDidShow:)
 													 name:UIKeyboardDidShowNotification object:nil];
-		
+
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(keyboardWillHide:)
 													 name:UIKeyboardWillHideNotification object:nil];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(keyboardDidHide:)
+													 name:UIKeyboardDidHideNotification object:nil];
 	}
 	return self;
 }
@@ -56,6 +60,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void) registerViewController:(UIViewController*)controller
@@ -88,12 +93,26 @@
 	return viewFrame.size;
 }
 
+- (CGSize) availableBeginSize:(CGRect)viewFrame
+{
+	viewFrame.size.height -= self.keyboardBeginSize.height;
+	return viewFrame.size;
+}
+
+- (CGSize) availableEndSize:(CGRect)viewFrame
+{
+	viewFrame.size.height -= self.keyboardEndSize.height;
+	return viewFrame.size;
+}
+
 
 #pragma mark - DAKeyboardManager ()
 
 - (void) keyboardWillShow:(NSNotification*)notification
 {
 	_keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+	_keyboardBeginSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+	_keyboardEndSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 	if (_keyboardVisible) {
 		for (UIViewController* controller in registeredViewControllers) {
 			if ([controller respondsToSelector:@selector(keyboardManagerWillChange:)]) {
@@ -124,6 +143,8 @@
 	BOOL keyboardWasVisible = _keyboardVisible;
 	_keyboardVisible = YES;
 	_keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+	_keyboardBeginSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+	_keyboardEndSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 	if (keyboardWasVisible) {
 		for (UIViewController* controller in registeredViewControllers) {
 			if ([controller respondsToSelector:@selector(keyboardManagerDidChange:)]) {
@@ -152,6 +173,8 @@
 - (void) keyboardWillHide:(NSNotification*)notification
 {
 	_keyboardVisible = NO;
+	_keyboardBeginSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+	_keyboardEndSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 	for (UIViewController* controller in registeredViewControllers) {
 		if ([controller respondsToSelector:@selector(keyboardManagerWillHide:)]) {
 			[controller performSelector:@selector(keyboardManagerWillHide:) withObject:notification];
@@ -160,6 +183,22 @@
 	for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
 		if ([object respondsToSelector:@selector(keyboardManagerWillHide:)]) {
 			[object performSelector:@selector(keyboardManagerWillHide:) withObject:notification];
+		}
+	}
+}
+
+- (void) keyboardDidHide:(NSNotification*)notification
+{
+	_keyboardBeginSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+	_keyboardEndSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+	for (UIViewController* controller in registeredViewControllers) {
+		if ([controller respondsToSelector:@selector(keyboardManagerDidHide:)]) {
+			[controller performSelector:@selector(keyboardManagerDidHide:) withObject:notification];
+		}
+	}
+	for (id<DAKeyboardManagerProtocol> object in registeredObjects) {
+		if ([object respondsToSelector:@selector(keyboardManagerDidHide:)]) {
+			[object performSelector:@selector(keyboardManagerDidHide:) withObject:notification];
 		}
 	}
 }
